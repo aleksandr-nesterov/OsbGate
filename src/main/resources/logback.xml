@@ -1,0 +1,46 @@
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+        <!-- encoders are assigned the type: ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+    <appender name="FILE_ROOT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/osb-gate.log</file>
+
+        <!--How many logs to store in archive-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <FileNamePattern>logs/osb-gate.%d{yyyyMMdd}.%i.gz</FileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+    <!--Switch on appenders-->
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE_ROOT"/>
+    </root>
+
+    <logger name="com.spaniard" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE_ROOT"/>
+    </logger>
+
+</configuration>
